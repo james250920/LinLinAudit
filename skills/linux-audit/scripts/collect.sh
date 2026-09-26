@@ -15,7 +15,7 @@
 set -u
 set -o pipefail
 
-VERSION="1.0.0"
+VERSION="1.0.1"
 ALL_MODULES="inventory system users ssh network firewall services packages filesystem logs auditd mac scheduled containers kubernetes webapps backups secrets integrity capacity virtualization"
 
 OUT=""
@@ -118,6 +118,22 @@ export SUDO SINCE
 export LC_ALL=C
 
 have() { command -v "$1" >/dev/null 2>&1; }
+
+# lla_reach <ruta>: "yes" si cualquier usuario puede atravesar todos los directorios padre
+# (o+x); un archivo 644 dentro de un home 700 no es legible por otros.
+lla_reach() {
+    local d
+    d=$(dirname "$1")
+    while [ "$d" != "/" ] && [ "$d" != "." ]; do
+        case "$($SUDO stat -c %A "$d" 2>/dev/null)" in
+            ?????????[xt]) ;;
+            *) echo no; return ;;
+        esac
+        d=$(dirname "$d")
+    done
+    echo yes
+}
+export -f lla_reach
 TIMEOUT_BIN=""
 have timeout && TIMEOUT_BIN="timeout"
 
@@ -465,8 +481,8 @@ mod_backups() {
 mod_secrets() {
     local m=secrets
     # Solo rutas y permisos — nunca el contenido.
-    run $m pattern-files '$SUDO grep -rIliE --exclude=nsswitch.conf --exclude-dir=alternatives --exclude-dir=ssl --exclude-dir=pki --exclude-dir=selinux --exclude-dir=man --exclude-dir=node_modules --exclude-dir=.git --exclude="*.js" --exclude="*.map" --exclude="*.html" --exclude="*.css" --exclude="*.md" --exclude="*.template" --exclude="*.example" --exclude="*.sample" -e "(password|passwd|pwd|secret|secret[_-]?key|token|api[_-]?key|access[_-]?key|private[_-]?key)[\"'"'"']?[[:space:]]*=[[:space:]]*[\"'"'"']?[^[:space:]\"'"'"'\$<{]{4,}" -e "^[[:space:]]*[a-z_]*(password|secret|secret[_-]?key|token|api[_-]?key|access[_-]?key):[[:space:]]+[\"'"'"']?[^[:space:]\"'"'"'\$<{#]{4,}" /etc /opt /srv /var/www 2>/dev/null | head -300 | while read -r f; do $SUDO stat -c "%a %U:%G %n" "$f"; done'
-    run $m env-files '$SUDO find /opt /srv /var/www /home /root /etc -xdev -maxdepth 5 -type f \( -name ".env" -o -name ".env.*" -o -name "*.env" \) ! -name "*.example" ! -name "*.sample" ! -name "*.template" ! -name "*.dist" -printf "%m %u:%g %p\n" 2>/dev/null'
+    run $m pattern-files '$SUDO grep -rIliE --exclude=nsswitch.conf --exclude-dir=alternatives --exclude-dir=ssl --exclude-dir=pki --exclude-dir=selinux --exclude-dir=man --exclude-dir=node_modules --exclude-dir=.git --exclude="*.js" --exclude="*.map" --exclude="*.html" --exclude="*.css" --exclude="*.md" --exclude="*.template" --exclude="*.example" --exclude="*.sample" -e "(password|passwd|pwd|secret|secret[_-]?key|token|api[_-]?key|access[_-]?key|private[_-]?key)[\"'"'"']?[[:space:]]*=[[:space:]]*[\"'"'"']?[^[:space:]\"'"'"'\$<{]{4,}" -e "^[[:space:]]*[a-z_]*(password|secret|secret[_-]?key|token|api[_-]?key|access[_-]?key):[[:space:]]+[\"'"'"']?[^[:space:]\"'"'"'\$<{#]{4,}" /etc /opt /srv /var/www 2>/dev/null | head -300 | while read -r f; do echo "$($SUDO stat -c "%a %U:%G %n" "$f") reach=$(lla_reach "$f")"; done'
+    run $m env-files '$SUDO find /opt /srv /var/www /home /root /etc -xdev -maxdepth 5 -type f \( -name ".env" -o -name ".env.*" -o -name "*.env" \) ! -name "*.example" ! -name "*.sample" ! -name "*.template" ! -name "*.dist" -printf "%m %u:%g %p\n" 2>/dev/null | while read -r m o p; do echo "$m $o $p reach=$(lla_reach "$p")"; done'
     # Solo archivos cuyo contenido es realmente una clave privada (grep -l no imprime el contenido)
     run $m private-keys '$SUDO find /home /root /etc /opt /srv -xdev -maxdepth 6 -type f \( -name "id_rsa" -o -name "id_dsa" -o -name "id_ecdsa" -o -name "id_ed25519" -o -name "*.key" -o -name "*.pem" \) ! -path "/etc/ssh/ssh_host_*" 2>/dev/null | while read -r f; do $SUDO grep -qs -- "PRIVATE KEY" "$f" && $SUDO stat -c "%a %U:%G %n" "$f"; done; echo "(fin)"'
     run $m history-files '$SUDO find /home /root -maxdepth 2 -type f -name ".*history" -printf "%m %u:%g %s %p\n" 2>/dev/null'

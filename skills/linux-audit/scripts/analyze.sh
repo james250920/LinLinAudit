@@ -13,7 +13,7 @@ set -u
 set -o pipefail
 export LC_ALL=C
 
-VERSION="1.0.0"
+VERSION="1.0.1"
 
 usage() {
     cat >&2 <<EOF
@@ -57,10 +57,20 @@ body() { grep -v '^##LLA ' "$EV/$1" 2>/dev/null; }
 exitcode() { sed -n 's/^##LLA exit: //p' "$EV/$1" 2>/dev/null | tail -1; }
 denied() { grep -qiE 'permission denied|operation not permitted|must be (run as )?root|a password is required|you must be root|are you root|requires root' "$EV/$1" 2>/dev/null; }
 
+# Controles cuyo PASS exige visibilidad completa del sistema: sin root/sudo, find/grep
+# omiten en silencio lo que no pueden leer, así que la ausencia de resultados no prueba nada.
+ROOT_VISIBILITY="FS-001 FS-002 FS-003 FS-006 SVC-002 SCH-001 SEC-001 SEC-002 SEC-003"
+PRIVILEGE="$(sed -n 's/^privilege: //p' "$EV/manifest.txt" 2>/dev/null | head -1)"
+
 emit() { # id control status evidence detail
-    local d="${5//$'\t'/ }"
+    local st="$3" d="${5//$'\t'/ }"
     d="${d//$'\n'/; }"
-    printf '%s\t%s\t%s\t%s\t%s\n' "$1" "$2" "$3" "$4" "$d" >> "$TSV"
+    if [ "$st" = "PASS" ] && [ "$PRIVILEGE" != "root" ] && [ "$PRIVILEGE" != "sudo" ] \
+        && [[ " $ROOT_VISIBILITY " == *" $1 "* ]]; then
+        st="UNKNOWN"
+        d="recolección sin root/sudo: visibilidad parcial ($d)"
+    fi
+    printf '%s\t%s\t%s\t%s\t%s\n' "$1" "$2" "$st" "$4" "$d" >> "$TSV"
 }
 
 unknown_reason() {
@@ -495,7 +505,7 @@ check_secrets() {
     local f=secrets/pattern-files.txt n
     if available "$f" && ! denied "$f"; then
         n=$(body "$f" | grep -cE '^[0-7]{3,4} ')
-        local wr; wr=$(body "$f" | awk '$1 ~ /[4567]$/ {print $3}' | head -10 | paste -sd, -)
+        local wr; wr=$(body "$f" | awk '$1 ~ /[4567]$/ && $NF != "reach=no" {print $3}' | head -10 | paste -sd, -)
         if [ -n "$wr" ]; then emit SEC-001 "Archivos con secretos no legibles por todos" PARTIAL "$f" "$n coincidencia(s); legibles por cualquier usuario (validar manualmente, posibles falsos positivos): $wr"
         elif [ "$n" -gt 0 ]; then emit SEC-001 "Archivos con secretos no legibles por todos" PARTIAL "$f" "$n archivo(s) con patrones de secreto (permisos restringidos; revisar necesidad)"
         else emit SEC-001 "Archivos con secretos no legibles por todos" PASS "$f" "sin coincidencias"; fi
@@ -510,9 +520,9 @@ check_secrets() {
 
     f=secrets/env-files.txt
     if available "$f"; then
-        local wr2; wr2=$(body "$f" | awk '$1 ~ /[4567]$/ {print $3}' | head -10 | paste -sd, -)
+        local wr2; wr2=$(body "$f" | awk '$1 ~ /[4567]$/ && $NF != "reach=no" {print $3}' | head -10 | paste -sd, -)
         if [ -n "$wr2" ]; then emit SEC-003 "Archivos .env no legibles por todos" FAIL "$f" "legibles por cualquier usuario: $wr2"
-        else emit SEC-003 "Archivos .env no legibles por todos" PASS "$f" "$(body "$f" | grep -cE '^[0-7]{3,4} ') archivo(s) .env sin lectura global"; fi
+        else emit SEC-003 "Archivos .env no legibles por todos" PASS "$f" "$(body "$f" | grep -cE '^[0-7]{3,4} ') archivo(s) .env sin lectura efectiva por otros usuarios"; fi
     fi
 }
 
