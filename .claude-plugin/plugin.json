@@ -1,6 +1,6 @@
 {
   "name": "linlinaudit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Skills para auditar la seguridad de servidores Linux y Homelab de forma read-only, reproducible y con evidencia: recolección, análisis, hallazgos, informe, remediación autorizada y re-auditoría.",
   "author": {
     "name": "james250920"

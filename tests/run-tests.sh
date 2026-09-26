@@ -104,6 +104,18 @@ for pair in SSH-001:PASS SSH-002:PASS FW-001:PASS MAC-001:PASS CTR-003:PASS BKP-
     expect "$T" "${pair%%:*}" "${pair#*:}"
 done
 
+grep -P '^SEC-003\t' "$TMP/an-insecure/auto-checks.tsv" | grep -q '/home/alice/app/.env' \
+    && fail "SEC-003 marca un .env no alcanzable (reach=no)" || ok "SEC-003 ignora .env no alcanzable por otros"
+
+section "analyze.sh — recolección sin privilegios ⇒ sin PASS de visibilidad"
+cp -r "$FIX/hardened" "$TMP/lowpriv"
+sed -i 's/^privilege: .*/privilege: user/' "$TMP/lowpriv/manifest.txt"
+bash "$ANALYZE" "$TMP/lowpriv" -o "$TMP/an-lowpriv" >/dev/null 2>&1
+T="$TMP/an-lowpriv/auto-checks.tsv"
+for pair in FS-001:UNKNOWN FS-002:UNKNOWN FS-003:UNKNOWN SVC-002:UNKNOWN SCH-001:UNKNOWN SEC-002:UNKNOWN SEC-003:UNKNOWN SSH-001:PASS; do
+    expect "$T" "${pair%%:*}" "${pair#*:}"
+done
+
 section "analyze.sh — sin evidencia ⇒ UNKNOWN, nunca PASS"
 mkdir -p "$TMP/empty"; echo "hostname: vacío" > "$TMP/empty/manifest.txt"
 bash "$ANALYZE" "$TMP/empty" -o "$TMP/an-empty" >/dev/null 2>&1

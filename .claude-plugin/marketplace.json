@@ -9,7 +9,7 @@
       "name": "linlinaudit",
       "source": "./",
       "description": "Auditoría de seguridad read-only para servidores Linux y Homelab.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "license": "Apache-2.0"
     }
   ]

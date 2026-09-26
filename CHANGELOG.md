@@ -3,6 +3,17 @@
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y
 [SemVer](https://semver.org/lang/es/).
 
+## [1.0.1] - 2026-09-25
+
+### Corregido
+
+- `analyze.sh`: los controles que requieren visibilidad completa (FS-001/002/003/006, SVC-002,
+  SCH-001, SEC-001/002/003) devolvían `PASS` en recolecciones sin root/sudo, aunque `find`/`grep`
+  omitían en silencio lo que no podían leer. Ahora devuelven `UNKNOWN`.
+- `collect.sh`: `secrets/env-files` y `secrets/pattern-files` indican `reach=yes|no` según si otros
+  usuarios pueden atravesar los directorios padre; SEC-001/SEC-003 ya no marcan archivos dentro de
+  directorios privados (p. ej. un home 700).
+
 ## [1.0.0] - 2026-09-25
 
 ### Añadido
