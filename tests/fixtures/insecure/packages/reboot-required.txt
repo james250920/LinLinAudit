@@ -1,0 +1,6 @@
+##LLA command: fixture
+##LLA privilege: root
+REBOOT_REQUIRED
+linux-image-6.1.0-20-amd64
+running_kernel=6.1.0-18-amd64
+##LLA exit: 0

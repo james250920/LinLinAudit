@@ -1,0 +1,5 @@
+##LLA command: fixture
+##LLA privilege: root
+/portainer image=portainer/portainer-ce:latest user= privileged=false network=bridge pid= ipc=private readonly=false memory=0 nanocpus=0 restart=always capadd=null secopt=null ports={} mounts=bind:/var/run/docker.sock->/var/run/docker.sock:rw=true; env_names=PATH,
+/debug image=ubuntu:22.04 user=root privileged=true network=host pid=host ipc=host readonly=false memory=0 nanocpus=0 restart=no capadd=null secopt=null ports={} mounts= env_names=PATH,DB_PASSWORD,
+##LLA exit: 0

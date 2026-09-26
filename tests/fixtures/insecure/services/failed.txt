@@ -1,0 +1,4 @@
+##LLA command: fixture
+##LLA privilege: root
+● backup.service loaded failed failed Nightly backup
+##LLA exit: 0

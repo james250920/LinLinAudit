@@ -1,0 +1,4 @@
+##LLA command: fixture
+##LLA privilege: root
+deb [trusted=yes] http://repo.example.internal/debian bookworm main
+##LLA exit: 0

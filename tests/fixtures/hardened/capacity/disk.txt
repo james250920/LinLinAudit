@@ -1,0 +1,5 @@
+##LLA command: fixture
+##LLA privilege: root
+Filesystem Type Size Used Avail Use% Mounted on
+/dev/sda1 ext4 50G 20G 30G 40% /
+##LLA exit: 0

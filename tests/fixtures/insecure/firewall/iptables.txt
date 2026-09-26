@@ -1,0 +1,6 @@
+##LLA command: fixture
+##LLA privilege: root
+-P INPUT ACCEPT
+-P FORWARD ACCEPT
+-P OUTPUT ACCEPT
+##LLA exit: 0

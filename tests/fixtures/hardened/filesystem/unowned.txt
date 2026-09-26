@@ -1,0 +1,4 @@
+##LLA command: fixture
+##LLA privilege: root
+
+##LLA exit: 0

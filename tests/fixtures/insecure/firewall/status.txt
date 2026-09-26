@@ -1,0 +1,6 @@
+##LLA command: fixture
+##LLA privilege: root
+ufw: inactive
+firewalld: inactive
+nftables: inactive
+##LLA exit: 0

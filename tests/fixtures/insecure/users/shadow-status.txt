@@ -1,0 +1,6 @@
+##LLA command: fixture
+##LLA privilege: root
+root SET lastchg=19000 max=99999 expire=
+backup EMPTY lastchg=19000 max=99999 expire=
+www-data LOCKED lastchg=19000 max=99999 expire=
+##LLA exit: 0

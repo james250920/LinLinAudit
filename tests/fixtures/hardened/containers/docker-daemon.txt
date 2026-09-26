@@ -1,0 +1,4 @@
+##LLA command: fixture
+##LLA privilege: root
+/usr/bin/dockerd -H fd://
+##LLA exit: 0

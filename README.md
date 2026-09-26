@@ -1,5 +1,95 @@
 # Linux & Homelab Security Audit Skill
 
+[![CI](https://github.com/james250920/LinLinAudit/actions/workflows/ci.yml/badge.svg)](https://github.com/james250920/LinLinAudit/actions/workflows/ci.yml)
+
+Este repositorio contiene la **metodología** de auditoría (este documento) y su implementación como
+**Skills de Claude Code**, con scripts read-only que recolectan evidencia, la analizan y la comparan
+entre ciclos de hardening.
+
+## Skills incluidos
+
+| Skill | Modos (§36) | Qué hace |
+|---|---|---|
+| `/linux-audit` | DISCOVERY, AUDIT | Alcance, recolección de evidencia (local o SSH), controles automáticos, revisión por fase, hallazgos y baseline. |
+| `/linux-audit-report` | REPORT | Informe final con executive summary, arquitectura, hallazgos, baseline y plan (§32). |
+| `/linux-audit-remediate` | REVIEW, REMEDIATION, VALIDATION | Plan de remediación y aplicación **solo de cambios autorizados**, uno a uno, con backup y rollback. Solo se invoca manualmente. |
+| `/linux-audit-compare` | VALIDATION | Re-auditoría: compara dos capturas, detecta mejoras y regresiones, actualiza hallazgos (§34). |
+
+## Instalación
+
+Como plugin de Claude Code (recomendado):
+
+```text
+/plugin marketplace add james250920/LinLinAudit
+/plugin install linlinaudit@linlinaudit
+```
+
+Los skills quedan disponibles como `/linlinaudit:linux-audit`, etc. Alternativa sin plugin
+(enlaces simbólicos en `~/.claude/skills`, o `--project DIR` para un proyecto):
+
+```bash
+git clone https://github.com/james250920/LinLinAudit.git
+cd LinLinAudit && ./install.sh
+```
+
+## Uso
+
+En Claude Code:
+
+```text
+/linux-audit local
+/linux-audit admin@192.168.1.10
+/linux-audit-report
+/linux-audit-remediate FINDING-003
+/linux-audit-compare srv01
+```
+
+O los scripts directamente, sin Claude:
+
+```bash
+S=skills/linux-audit/scripts
+
+# Recolección local (read-only). Con sudo se obtiene evidencia completa.
+sudo bash $S/collect.sh -o ./linux-audit/servers/$(hostname)/evidence/evidence-$(date +%Y%m%d-%H%M%S)
+
+# Recolección remota por SSH (--sudo pide la contraseña en la terminal)
+bash $S/remote-collect.sh --sudo admin@192.168.1.10 -- --since "14 days ago"
+
+# Controles automáticos preliminares → auto-checks.md
+bash $S/analyze.sh ./linux-audit/servers/<host>/evidence/evidence-<ts>
+
+# Antes / después
+bash skills/linux-audit-compare/scripts/compare.sh <evidencia-antes> <evidencia-después> -o compare.md
+
+# Redactar secretos de cualquier salida
+some-command | bash $S/collect.sh --redact
+```
+
+Opciones de `collect.sh`: `--list-modules`, `-m ssh,network,firewall`, `--quick` (sin escaneos de
+todo el filesystem), `--since`, `--timeout`, `--no-sudo`, `--archive`.
+
+La evidencia queda en `linux-audit/` (modo 700, ignorado por git) con `manifest.txt`,
+`commands.tsv` (comando exacto y exit code de cada archivo), `limitations.txt` (herramientas
+ausentes, permisos, timeouts) y `SHA256SUMS`.
+
+## Estructura del repositorio
+
+```text
+.claude-plugin/          manifiestos del plugin y del marketplace
+skills/
+├── linux-audit/         SKILL.md · scripts/ (collect, remote-collect, analyze)
+│                        references/ (guía por fase, severidad) · templates/ (alcance, hallazgo, baseline)
+├── linux-audit-report/  SKILL.md · templates/report.md
+├── linux-audit-remediate/ SKILL.md · templates/remediation-plan.md · references/remediation-playbook.md
+└── linux-audit-compare/ SKILL.md · scripts/compare.sh
+tests/                   run-tests.sh · fixtures/ (evidencia sintética insegura y endurecida)
+install.sh               instalación sin plugin
+```
+
+Desarrollo: `bash tests/run-tests.sh` (ver `CLAUDE.md`).
+
+---
+
 ## 1. Propósito
 
 Este skill define un procedimiento profesional y repetible para auditar servidores Linux y entornos Homelab.

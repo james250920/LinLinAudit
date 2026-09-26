@@ -1,0 +1,5 @@
+##LLA command: fixture
+##LLA privilege: root
+/etc/systemd/system/restic-backup.service:5:ExecStart=/usr/bin/restic backup /srv
+(fin)
+##LLA exit: 0

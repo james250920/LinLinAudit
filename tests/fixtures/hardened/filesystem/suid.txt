@@ -1,0 +1,5 @@
+##LLA command: fixture
+##LLA privilege: root
+4755 root:root /usr/bin/sudo
+4755 root:root /usr/bin/passwd
+##LLA exit: 0

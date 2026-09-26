@@ -1,0 +1,4 @@
+##LLA command: fixture
+##LLA privilege: root
+/etc/rsyslog.d/50-remote.conf:1:*.* @@logs.lan:514
+##LLA exit: 0

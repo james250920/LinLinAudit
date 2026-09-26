@@ -1,0 +1,8 @@
+##LLA command: fixture
+##LLA privilege: root
+State  Recv-Q Send-Q Local Address:Port Peer Address:Port Process
+LISTEN 0 128 0.0.0.0:22 0.0.0.0:* users:(("sshd",pid=800,fd=3))
+LISTEN 0 128 0.0.0.0:6379 0.0.0.0:* users:(("redis-server",pid=900,fd=6))
+LISTEN 0 128 0.0.0.0:2375 0.0.0.0:* users:(("dockerd",pid=1000,fd=9))
+LISTEN 0 128 127.0.0.1:5432 0.0.0.0:* users:(("postgres",pid=1100,fd=5))
+##LLA exit: 0

@@ -1,0 +1,6 @@
+##LLA command: fixture
+##LLA privilege: root
+Status: active
+Default: deny (incoming), allow (outgoing), disabled (routed)
+2222/tcp ALLOW IN Anywhere
+##LLA exit: 0

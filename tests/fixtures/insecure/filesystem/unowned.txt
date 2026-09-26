@@ -1,0 +1,4 @@
+##LLA command: fixture
+##LLA privilege: root
+644 1005:1005 /opt/old/app.jar
+##LLA exit: 0
