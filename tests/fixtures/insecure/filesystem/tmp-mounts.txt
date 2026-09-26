@@ -1,0 +1,4 @@
+##LLA command: fixture
+##LLA privilege: root
+/tmp	(no es punto de montaje)
+##LLA exit: 0

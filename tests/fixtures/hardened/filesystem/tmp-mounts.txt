@@ -1,0 +1,4 @@
+##LLA command: fixture
+##LLA privilege: root
+/tmp	tmpfs tmpfs rw,nosuid,nodev,noexec,relatime
+##LLA exit: 0

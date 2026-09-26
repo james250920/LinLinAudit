@@ -1,0 +1,13 @@
+##LLA command: fixture
+##LLA privilege: root
+port 2222
+permitrootlogin no
+passwordauthentication no
+kbdinteractiveauthentication no
+permitemptypasswords no
+x11forwarding no
+maxauthtries 3
+ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com
+macs hmac-sha2-512-etm@openssh.com
+kexalgorithms curve25519-sha256
+##LLA exit: 0

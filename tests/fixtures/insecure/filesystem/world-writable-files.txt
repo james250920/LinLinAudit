@@ -1,0 +1,4 @@
+##LLA command: fixture
+##LLA privilege: root
+666 root:root /etc/app/config.ini
+##LLA exit: 0

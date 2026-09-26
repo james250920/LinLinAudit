@@ -1,0 +1,6 @@
+##LLA command: fixture
+##LLA privilege: root
+apparmor module is loaded.
+0 profiles are loaded.
+0 profiles are in enforce mode.
+##LLA exit: 0

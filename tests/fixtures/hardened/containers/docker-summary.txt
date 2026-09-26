@@ -1,0 +1,4 @@
+##LLA command: fixture
+##LLA privilege: root
+/web image=nginx:1.25 user=101 privileged=false network=bridge pid= ipc=private readonly=true memory=536870912 nanocpus=1000000000 restart=always capadd=null secopt=null ports={} mounts= env_names=PATH,
+##LLA exit: 0

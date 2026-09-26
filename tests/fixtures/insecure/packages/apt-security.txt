@@ -1,0 +1,4 @@
+##LLA command: fixture
+##LLA privilege: root
+openssl/stable-security 3.0.11-1~deb12u2 amd64 [upgradable from: 3.0.11-1~deb12u1]
+##LLA exit: 0

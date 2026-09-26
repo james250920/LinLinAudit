@@ -1,0 +1,6 @@
+##LLA command: fixture
+##LLA privilege: root
+md0 : active raid1 sdc1[0] sdd1[1]
+      976630464 blocks super 1.2 [2/2] [UU]
+(fin)
+##LLA exit: 0

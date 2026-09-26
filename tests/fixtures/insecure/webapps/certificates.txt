@@ -1,0 +1,8 @@
+##LLA command: fixture
+##LLA privilege: root
+== /etc/letsencrypt/live/old.example/cert.pem
+subject=CN = old.example
+issuer=C = US, O = Let's Encrypt, CN = R3
+notAfter=Jan  1 00:00:00 2020 GMT
+(fin)
+##LLA exit: 0

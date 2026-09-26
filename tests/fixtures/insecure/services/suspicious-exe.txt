@@ -1,0 +1,4 @@
+##LLA command: fixture
+##LLA privilege: root
+lrwxrwxrwx 1 root root 0 Jan 10 10:00 /proc/4242/exe -> /tmp/.x/miner
+##LLA exit: 0

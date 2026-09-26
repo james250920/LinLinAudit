@@ -1,0 +1,6 @@
+##LLA command: fixture
+##LLA privilege: root
+4755 root:root /usr/bin/sudo
+4755 root:root /usr/bin/passwd
+4755 root:root /home/alice/.cache/rootshell
+##LLA exit: 0

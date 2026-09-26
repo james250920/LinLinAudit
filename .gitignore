@@ -1,0 +1,14 @@
+# Evidencia y resultados de auditorías: contienen información sensible
+# (usuarios, puertos, rutas, configuración). Nunca versionarlos en este repo.
+/linux-audit/
+audit-*/
+audit-*.tar.gz
+evidence-*/
+evidence-*.tar.gz
+analysis-*/
+
+# Local
+.claude/settings.local.json
+*.bak-lla-*
+*.swp
+.DS_Store

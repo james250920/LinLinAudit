@@ -1,0 +1,4 @@
+##LLA command: fixture
+##LLA privilege: root
+/etc/sudoers:20:%sudo ALL=(ALL:ALL) ALL
+##LLA exit: 0

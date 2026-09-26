@@ -1,0 +1,6 @@
+##LLA command: fixture
+##LLA privilege: root
+[Journal]
+Storage=volatile
+ls: cannot access '/var/log/journal': No such file or directory
+##LLA exit: 0

@@ -1,0 +1,4 @@
+##LLA command: fixture
+##LLA privilege: root
+/etc/sudoers.d/deploy:1:deploy ALL=(ALL) NOPASSWD: ALL
+##LLA exit: 0

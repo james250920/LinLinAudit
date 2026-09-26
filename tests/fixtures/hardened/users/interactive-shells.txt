@@ -1,0 +1,5 @@
+##LLA command: fixture
+##LLA privilege: root
+root:0:/bin/bash
+alice:1000:/bin/bash
+##LLA exit: 0

@@ -1,0 +1,6 @@
+##LLA command: fixture
+##LLA privilege: root
+Listing...
+openssl/stable-security 3.0.11-1~deb12u2 amd64 [upgradable from: 3.0.11-1~deb12u1]
+vim/stable 2:9.0.1378-2+deb12u1 amd64 [upgradable from: 2:9.0.1378-2]
+##LLA exit: 0

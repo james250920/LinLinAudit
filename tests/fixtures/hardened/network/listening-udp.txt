@@ -1,0 +1,4 @@
+##LLA command: fixture
+##LLA privilege: root
+State Recv-Q Send-Q Local Address:Port Peer Address:Port Process
+##LLA exit: 0

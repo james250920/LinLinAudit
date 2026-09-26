@@ -1,0 +1,5 @@
+##LLA command: fixture
+##LLA privilege: root
+State Recv-Q Send-Q Local Address:Port Peer Address:Port Process
+UNCONN 0 0 224.0.0.251:5353 0.0.0.0:* users:(("avahi-daemon",pid=700,fd=12))
+##LLA exit: 0

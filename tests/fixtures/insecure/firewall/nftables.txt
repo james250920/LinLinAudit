@@ -1,0 +1,8 @@
+##LLA command: fixture
+##LLA privilege: root
+table ip filter {
+	chain INPUT {
+		type filter hook input priority filter; policy accept;
+	}
+}
+##LLA exit: 0

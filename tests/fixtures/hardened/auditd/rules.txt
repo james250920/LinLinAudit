@@ -1,0 +1,5 @@
+##LLA command: fixture
+##LLA privilege: root
+-w /etc/passwd -p wa -k identity
+-w /etc/sudoers -p wa -k scope
+##LLA exit: 0

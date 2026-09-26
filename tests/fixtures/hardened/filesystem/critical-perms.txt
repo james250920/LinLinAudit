@@ -1,0 +1,7 @@
+##LLA command: fixture
+##LLA privilege: root
+644 root:root /etc/passwd
+640 root:shadow /etc/shadow
+440 root:root /etc/sudoers
+600 root:root /etc/ssh/sshd_config
+##LLA exit: 0

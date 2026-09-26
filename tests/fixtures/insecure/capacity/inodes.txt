@@ -1,0 +1,5 @@
+##LLA command: fixture
+##LLA privilege: root
+Filesystem Inodes IUsed IFree IUse% Mounted on
+/dev/sda1 3276800 100000 3176800 4% /
+##LLA exit: 0

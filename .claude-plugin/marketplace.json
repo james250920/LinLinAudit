@@ -1,0 +1,16 @@
+{
+  "name": "linlinaudit",
+  "owner": {
+    "name": "james250920"
+  },
+  "description": "Skills de Claude Code para auditar la seguridad de servidores Linux y Homelab.",
+  "plugins": [
+    {
+      "name": "linlinaudit",
+      "source": "./",
+      "description": "Auditoría de seguridad read-only para servidores Linux y Homelab.",
+      "version": "1.0.0",
+      "license": "Apache-2.0"
+    }
+  ]
+}
